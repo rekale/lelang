@@ -31,7 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'bids.apps.BidsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,6 +41,7 @@ INSTALLED_APPS = [
 
     # apps
     'products.apps.ProductsConfig',
+    'bids.apps.BidsConfig',
 ]
 
 MIDDLEWARE = [
