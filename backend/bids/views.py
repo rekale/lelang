@@ -17,3 +17,4 @@ class BidOptionViewSet(viewsets.ModelViewSet):
     """
     queryset = BidOption.objects.all().order_by('-id')
     serializer_class = BidOptionSerializer
+    filter_fields = ('product',)
