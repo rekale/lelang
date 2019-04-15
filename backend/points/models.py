@@ -8,8 +8,8 @@ class Point(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     total = models.IntegerField(default=0)
 
-    # def __str__(self):
-    #     return self.user.name
+    def __str__(self):
+        return str(self.total)
 
 @receiver(post_save, sender=User)
 def create_user_point(sender, instance, created, **kwargs):
