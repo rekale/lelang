@@ -17,7 +17,7 @@ class BidSerializer(serializers.ModelSerializer):
         try:
             highest_bid = Bid.objects.filter(product_id=product_id).order_by('-offering_price')[0]
 
-            if new_bid <= highest_bid:
+            if new_bid <= highest_bid.offering_price:
                 raise serializers.ValidationError("Maaf, sudah ada penawaran yang tinggi. Silahkan tawar lebih tinggi")
         except IndexError as highest_bid_not_found:
             print("No highest bid found")
