@@ -11,6 +11,9 @@ class Bid(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def calculate_point(self):
+        return float(self.offering_price) / 10
+
 
 class BidOption(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
