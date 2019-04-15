@@ -22,15 +22,11 @@ class BidSerializer(serializers.ModelSerializer):
         except IndexError as highest_bid_not_found:
             print("No highest bid found")
 
-
-
     def create(self, validated_data):
         # Calculate tokopoints that needs to be deducted
         bid = Bid(**validated_data)
-        bid.tokopoints_deducted = bid.calculate_point()
+        bid.tokopoints_deducted = Bid.calculate_point(bid.offering_price)
         bid.save()
-
-        # TODO: Update user's tokopoints data
 
         return bid
 
