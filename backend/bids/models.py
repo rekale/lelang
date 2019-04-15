@@ -12,7 +12,7 @@ class Bid(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class BidOptions(models.Model):
+class BidOption(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     price_increment = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
