@@ -3,6 +3,8 @@ from rest_framework import serializers
 
 
 class BidSerializer(serializers.ModelSerializer):
+    tokopoints_deducted = serializers.FloatField(required=False)
+
     class Meta:
         model = Bid
         fields = ('user', 'product', 'offering_price', 'tokopoints_deducted', 'created_at', 'updated_at')
