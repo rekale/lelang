@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # apps
     'products.apps.ProductsConfig',
     'bids.apps.BidsConfig',
+    'points.apps.PointsConfig',
 ]
 
 MIDDLEWARE = [
