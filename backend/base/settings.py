@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'corsheaders',
 
     # apps
+    'base.apps.BaseConfig',
     'products.apps.ProductsConfig',
     'bids.apps.BidsConfig',
     'points.apps.PointsConfig',
