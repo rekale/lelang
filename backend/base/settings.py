@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'corsheaders',
-    'django-seed',
+    'django_seed',
 
     # apps
     'base.apps.BaseConfig',
