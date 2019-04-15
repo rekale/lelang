@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ProductCard from './ProductCard'
 import { css, cx } from 'emotion'
+import NavBar from 'unify-react-mobile/build/NavBar'
 
 const _container = css`
   display: grid;
@@ -17,7 +18,10 @@ class DaftarLelang extends Component {
   render() {
     return(
       <div>
-        <h1>Daftar Lelang</h1>
+        <NavBar inverted
+          title="Text Goes Here"
+          onBack="https://www.tokopedia.com"
+        />
         <ProductFlex>
           <ProductCard />
           <ProductCard />
