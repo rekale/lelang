@@ -12,11 +12,11 @@ services:
       - ./backend/.env:/app/.env
     ports:
       - "8000:8000"
-  # frontend:
-  #   build: ./frontend
-  #   command: yarn start
-  #   volumes:
-  #     - ./frontend/src:/app/src
-  #     - ./frontend/public:/app/public
-  #   ports: 
-  #     - 3000:3000
+  frontend:
+    build: ./frontend
+    command: yarn start
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    ports: 
+      - 3000:3000

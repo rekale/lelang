@@ -5,7 +5,7 @@ import NavBar from 'unify-react-mobile/build/NavBar'
 import axios from 'axios'
 
 const getPL = () => {
-  axios.get('http://localhost:8000/products')
+  axios.get('http://localhost:8000/products/')
     .then(res => {
       console.log(res)
     })
