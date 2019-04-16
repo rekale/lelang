@@ -36,4 +36,4 @@ class BidSerializer(serializers.ModelSerializer):
 class BidOptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = BidOption
-        fields = ('product', 'price_increment', 'created_at', 'updated_at')
+        fields = ('id', 'product', 'price_increment', 'created_at', 'updated_at')
