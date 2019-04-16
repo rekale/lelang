@@ -6,16 +6,17 @@ import BottomSheet from 'unify-react-mobile/build/BottomSheet'
 import axios from 'axios'
 import moment from 'moment'
 
-
-const getProductDetail = () => ({
-  "id": 2,
-  "name": "Redmi Note 7",
-  "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "price": 4600000,
-  "bid_init_price": 50000,
-  "bid_current_price": 0,
-  "image": "http://localhost:8000/media/products/Screen_Shot_2019-04-08_at_2.00.55_PM.png"
-})
+function getRandomArrayElement(arr){
+  //Minimum value is set to 0 because array indexes start at 0.
+  var min = 0;
+  //Get the maximum value my getting the size of the
+  //array and subtracting by 1.
+  var max = (arr.length - 1);
+  //Get a random integer between the min and max value.
+  var randIndex = Math.floor(Math.random() * (max - min)) + min;
+  //Return random value.
+  return arr[randIndex];
+}
 
 const _detailLelang = css`
   font-size: 14px;
@@ -126,16 +127,24 @@ class DetailLelang extends Component {
       loading: false,
       error: null
     },
+    bidOption: {
+      data: [],
+      loading: false,
+      error: null
+    },
     point: 200000,
     form: {
       up: null,
       total: null
-    }
+    },
+    userId: getRandomArrayElement([9, 25, 48, 15, 38, 31])
   }
 
   componentWillMount() {
     this.getDetailLelang()
+    this.getBidOption()
   }
+
   getDetailLelang = () => {
     this.setState({ loading: true })
     axios.get('http://localhost:8000/products/' + this.props.match.params.id)
@@ -154,6 +163,50 @@ class DetailLelang extends Component {
             error: ex
           }
         })
+      })
+  }
+
+  getBidOption = () => {
+    this.setState({ 
+      bidOption: {
+        data: [],
+        loading: false
+      }
+    })
+    axios.get('http://localhost:8000/bid_options/?product=' + this.props.match.params.id)
+      .then(res => {
+        this.setState({
+          bidOption: {
+            data: res.data.results,
+            loading: false
+          }
+        })
+      })
+      .catch(ex => {
+        this.setState({
+          bidOption: {
+            data: {},
+            loading: false,
+            error: ex
+          }
+        })
+      })
+  }
+
+  postBid = () => {
+    axios.post('http://localhost:8000/bids/', {
+      "user": this.state.userId,
+      "product": this.state.payload.data.id,
+      "offering_price": this.state.form.total,
+      "tokopoints_deducted": 1
+    })
+      .then(res => {
+        alert('bid success')
+        this.getDetailLelang()
+        this.getBidOption()
+      })
+      .catch(ex => {
+        alert('maaf, nilai tawaranmu kurang')
       })
   }
 
@@ -222,28 +275,22 @@ class DetailLelang extends Component {
         </div>
 
         <BottomSheet title="Pilih Jumlah Penawaran"
-          subTitle="SubTitle of Information"
           onClose={this.triggerBottomSheet}
           display={this.state.showMenu}
-          actionText="Action Text"
-          onActionClick={() => alert('Unify is cool')}
         >
           <div>
             <div className={_gridButton}>
-              <Button onClick={() => this.upBid(100000, 100000 + data.bid_current_price)} secondary>100.000</Button>
-              <Button onClick={() => this.upBid(500000, 50000 + data.bid_current_price)} secondary>50.000</Button>
-              <Button onClick={() => this.upBid(25000, 25000 + data.bid_current_price)} secondary>25.000</Button>
-              <Button onClick={() => this.upBid(5000, 5000 + data.bid_current_price)} secondary>5.000</Button>
-            </div>
-            <div>
-              <div>Harga Awal</div>
-              <div>Rp{data.bid_current_price}</div>
+              {
+                this.state.bidOption.data.map((x,i) => (
+                  <Button onClick={() => this.upBid(x.price_increment, x.price_increment + data.bid_current_price)} secondary={x.price_increment !== this.state.form.up} secondaryGreen={x.price_increment === this.state.form.up}>{x.price_increment}</Button>
+                ))
+              }
             </div>
             <div>
               <div>Total Penawaran</div>
-              <div>Rp{this.state.form.total}</div>
+              <div style={{ color: 'red' }}> Rp{this.state.form.total}</div>
             </div>
-            <Button transaction block>Bid!</Button>
+            <Button onClick={this.postBid} transaction block>Kirim Penawaran</Button>
           </div>
         </BottomSheet>
       </div>
