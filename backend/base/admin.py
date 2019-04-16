@@ -4,8 +4,6 @@ from django.contrib.auth.models import User
 
 from points.models import Point
 
-# Define an inline admin descriptor for Point model
-# which acts a bit like a singleton
 class PointInline(admin.StackedInline):
     model = Point
     can_delete = False
