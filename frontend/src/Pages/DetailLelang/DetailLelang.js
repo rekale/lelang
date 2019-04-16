@@ -137,14 +137,24 @@ class DetailLelang extends Component {
       up: null,
       total: null
     },
-    userId: getRandomArrayElement([9, 25, 48, 15, 38, 31])
+    userId: getRandomArrayElement([42, 43, 44, 45, 46, 47, 48, 49, 50, 51]),
+    tokoPoints: 0
   }
 
   componentWillMount() {
+    this.getPoints()
     this.getDetailLelang()
     this.getBidOption()
   }
 
+  getPoints = () => {
+    axios.get('http://localhost:8000/points/?user=' + this.state.userId)
+      .then(res => {
+        this.setState({
+          tokoPoints: res.data.results[0].total
+        })
+      })
+  }
   getDetailLelang = () => {
     this.setState({ loading: true })
     axios.get('http://localhost:8000/products/' + this.props.match.params.id)
@@ -269,7 +279,7 @@ class DetailLelang extends Component {
         <div className="flex space-between sticky-bottom">
           <div>
             <div className="flex space-between"><div>Sekali Penawaran: </div><div className="font-red">-{data.points_to_deduct} point</div></div>
-            <div className="flex"><div>Point Kamu: </div><div className="font-green">{this.state.point}</div></div>
+            <div className="flex"><div>TokoPoints: </div><div className="font-green">{this.state.tokoPoints}</div></div>
           </div>
           <Button transaction onClick={this.triggerBottomSheet} style={{width: '100px'}}>Bid</Button>
         </div>
