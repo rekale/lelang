@@ -216,7 +216,7 @@ class DetailLelang extends Component {
       .catch(ex => {
         alert('maaf, nilai tawaranmu kurang')
       })
-      
+
       this.getDetailLelang()
       this.getBidOption()
       this.triggerBottomSheet()
@@ -246,7 +246,8 @@ class DetailLelang extends Component {
             onBack="/daftar-lelang"
           />
         </div>
-        <img src={"https://picsum.photos/300/300/?image=" + data.id} />
+        {/* <img src={"https://picsum.photos/300/300/?image=" + data.id} /> */}
+        <img src={data.image} />
         <div className="flex">
           <div className="hilight2">
             <div className="hilight1">berlaku hingga</div>
