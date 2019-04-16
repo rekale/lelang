@@ -212,12 +212,14 @@ class DetailLelang extends Component {
     })
       .then(res => {
         alert('bid success')
-        this.getDetailLelang()
-        this.getBidOption()
       })
       .catch(ex => {
         alert('maaf, nilai tawaranmu kurang')
       })
+      
+      this.getDetailLelang()
+      this.getBidOption()
+      this.triggerBottomSheet()
   }
 
   triggerBottomSheet = () => {
