@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Product(models.Model):
@@ -13,3 +14,10 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def calculate_point(self):
+        self.auction_start_at
+
+    def get_deducted_point(self):
+        now = timezone.now()
+        return self.productpoint_set.filter(start_at__lte=now,end_at__gte=now).order_by('-start_at').first()

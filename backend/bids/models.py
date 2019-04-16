@@ -14,10 +14,6 @@ class Bid(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    @staticmethod
-    def calculate_point(offering_price):
-        return float(offering_price) / 10
-
 
 # Update Product's Bid_Current_Price when creating a new bid
 @receiver(post_save, sender=Bid)
