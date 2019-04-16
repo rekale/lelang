@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('price', models.IntegerField(default=0)),
                 ('bid_init_price', models.IntegerField(default=0)),
                 ('bid_current_price', models.IntegerField(default=0)),
-                ('image', models.FileField(upload_to='products')),
+                ('image', models.ImageField(upload_to='products')),
             ],
         ),
     ]
