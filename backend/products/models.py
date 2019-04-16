@@ -21,4 +21,3 @@ class Product(models.Model):
     def get_deducted_point(self):
         now = timezone.now()
         return self.productpoint_set.filter(start_at__lte=now,end_at__gte=now).order_by('-start_at').first()
-
