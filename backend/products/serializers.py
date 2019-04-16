@@ -3,6 +3,7 @@ from .models import Product
 from rest_framework import serializers
 
 
+
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     points_to_deduct = serializers.SerializerMethodField()
     bid_status_label = serializers.SerializerMethodField()
@@ -13,7 +14,11 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
                   'auction_start_at', 'auction_end_at', 'bid_status_label')
 
     def get_points_to_deduct(self, obj):
-        return Bid.calculate_point(obj.bid_current_price)
+        point = obj.get_deducted_point()
+        if point is None:
+            return 0
+            
+        return point.amount
 
     def get_bid_status_label(self, obj):
         bid_count = Bid.objects.filter(product_id=obj.id).count()

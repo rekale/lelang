@@ -27,7 +27,7 @@ class BidSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # Calculate tokopoints that needs to be deducted
         bid = Bid(**validated_data)
-        bid.tokopoints_deducted = Bid.calculate_point(bid.offering_price)
+        bid.tokopoints_deducted = bid.product.get_deducted_point()
         bid.save()
 
         return bid
