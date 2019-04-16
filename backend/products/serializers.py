@@ -14,11 +14,8 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
                   'auction_start_at', 'auction_end_at', 'bid_status_label')
 
     def get_points_to_deduct(self, obj):
-        point = obj.get_deducted_point()
-        if point is None:
-            return 0
-            
-        return point.amount
+        return obj.get_deducted_point()
+       
 
     def get_bid_status_label(self, obj):
         bid_count = Bid.objects.filter(product_id=obj.id).count()

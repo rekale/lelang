@@ -23,9 +23,10 @@ def save_user_point(sender, instance, **kwargs):
 
 # When creating a new bid, deduct user's points
 @receiver(post_save, sender=Bid)
-def save_bid_reduce_point(sender, instance, created, **kwargs):
+def save_bid_reduce_point(sender, instance, created,     **kwargs):
     if created:
         point = Point.objects.get(user_id=instance.user.id)
+        print("=======================", instance.tokopoints_deducted)
         point.total = point.total - instance.tokopoints_deducted
         point.save()
 
