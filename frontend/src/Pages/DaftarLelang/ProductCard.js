@@ -57,7 +57,7 @@ class ProductCard extends Component {
     return(
       <Link to={'/detail-lelang/' + data.id}>
         <Card className={_productCard}  padding="0">
-          <img src="https://picsum.photos/250/150/?random" width="100%" />
+          <img src={"https://picsum.photos/250/150/?image=" + data.id} width="100%" />
           {/* <img src={data.image} width="100%" /> */}
           <div className="product-desc">
             <div className="product-title">{data.name}</div>

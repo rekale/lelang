@@ -244,7 +244,7 @@ class DetailLelang extends Component {
             onBack="/daftar-lelang"
           />
         </div>
-        <img src="https://picsum.photos/300/300/?random" />
+        <img src={"https://picsum.photos/300/300/?image=" + data.id} />
         <div className="flex">
           <div className="hilight2">
             <div className="hilight1">berlaku hingga</div>
