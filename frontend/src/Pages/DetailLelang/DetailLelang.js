@@ -3,6 +3,8 @@ import { css } from 'emotion'
 import NavBar from 'unify-react-mobile/build/NavBar'
 import Button from 'unify-react-mobile/build/Button'
 import BottomSheet from 'unify-react-mobile/build/BottomSheet'
+import axios from 'axios'
+import moment from 'moment'
 
 
 const getProductDetail = () => ({
@@ -53,7 +55,7 @@ const _detailLelang = css`
   }
   .hilight2 {
     display: flex;
-    background-color: #fafafa;
+    background-color: #f1f1f1;
     color: red;
     border-radius: 0 0 24px 0;
     span {
@@ -118,7 +120,41 @@ const _gridButton = css`
 
 class DetailLelang extends Component {
   state = {
-    showMenu: false
+    showMenu: false,
+    payload: {
+      data: {},
+      loading: false,
+      error: null
+    },
+    point: 200000,
+    form: {
+      up: null,
+      total: null
+    }
+  }
+
+  componentWillMount() {
+    this.getDetailLelang()
+  }
+  getDetailLelang = () => {
+    this.setState({ loading: true })
+    axios.get('http://localhost:8000/products/' + this.props.match.params.id)
+      .then(res => {
+        this.setState({
+          payload: {
+            data: res.data,
+            loading: false
+          }
+        })
+      })
+      .catch(ex => {
+        this.setState({
+          payload: {
+            loading: false,
+            error: ex
+          }
+        })
+      })
   }
 
   triggerBottomSheet = () => {
@@ -126,37 +162,45 @@ class DetailLelang extends Component {
       showMenu: !this.state.showMenu
     })
   }
+
+  upBid = (up, total) => {
+    this.setState({
+      form: {
+        up,
+        total
+      }
+    })
+  }
   render() {
-    const data = getProductDetail()
+    const { data } = this.state.payload
     return(
       <div className={_detailLelang}>
         <div className="product-nav-bar">
           <NavBar inverted
-            title="Text Goes Here"
+            title=""
             onBack="/daftar-lelang"
           />
         </div>
         <img src="https://picsum.photos/300/300/?random" />
-
         <div className="flex">
           <div className="hilight2">
             <div className="hilight1">berlaku hingga</div>
-            <span>02 : 27 : 53</span>
+            <span>{moment(data.auction_end_at).format('hh : mm : ss')}</span>
           </div>
         </div>
         <div className="product-desc">
-          <div className="product-title">{data.name} twetaweawefa wefawe fawefawefaw awfeawfawefawef aewfawefaew awefawe a</div>
+          <div className="product-title">{data.name}</div>
           <div className="flex">
             <div className="label1">ajukan lelang</div>
-            <div className="label-coret">Rp6.000.000</div>
+            <div className="label-coret">Rp{data.price}</div>
           </div>
           <div className="flex space-between mr-v">
             <div>mulai dari</div>
-            <div className="amount">Rp80.000</div>
+            <div className="amount">Rp{data.bid_init_price}</div>
           </div>
           <div className="flex space-between mr-v">
             <div>harga tertinggi saat ini</div>
-            <div className="amount font-red">Rp680.000</div>
+            <div className="amount font-red">Rp{data.bid_current_price}</div>
           </div>
         </div>
 
@@ -166,31 +210,41 @@ class DetailLelang extends Component {
 
         <div className="product-desc">
           <h2>Deskripsi</h2>
-          <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+          <div>{data.desc}</div>
         </div>
 
         <div className="flex space-between sticky-bottom">
           <div>
-            <div className="flex space-between"><div>Sekali Penawaran:</div><div className="font-red">-1000 point</div></div>
-            <div className="flex"><div>Point Kamu:</div><div className="font-green">200.000</div></div>
+            <div className="flex space-between"><div>Sekali Penawaran: </div><div className="font-red">-{data.points_to_deduct} point</div></div>
+            <div className="flex"><div>Point Kamu: </div><div className="font-green">{this.state.point}</div></div>
           </div>
-          <Button transaction onClick={this.triggerBottomSheet}>Bid</Button>
+          <Button transaction onClick={this.triggerBottomSheet} style={{width: '100px'}}>Bid</Button>
         </div>
 
-        <BottomSheet title="Title of Information"
+        <BottomSheet title="Pilih Jumlah Penawaran"
           subTitle="SubTitle of Information"
           onClose={this.triggerBottomSheet}
           display={this.state.showMenu}
           actionText="Action Text"
           onActionClick={() => alert('Unify is cool')}
         >
-          <div className={_gridButton}>
-            <Button secondary>100.000</Button>
-            <Button secondary>50.000</Button>
-            <Button secondary>25.000</Button>
-            <Button secondary>5.000</Button>
+          <div>
+            <div className={_gridButton}>
+              <Button onClick={() => this.upBid(100000, 100000 + data.bid_current_price)} secondary>100.000</Button>
+              <Button onClick={() => this.upBid(500000, 50000 + data.bid_current_price)} secondary>50.000</Button>
+              <Button onClick={() => this.upBid(25000, 25000 + data.bid_current_price)} secondary>25.000</Button>
+              <Button onClick={() => this.upBid(5000, 5000 + data.bid_current_price)} secondary>5.000</Button>
+            </div>
+            <div>
+              <div>Harga Awal</div>
+              <div>Rp{data.bid_current_price}</div>
+            </div>
+            <div>
+              <div>Total Penawaran</div>
+              <div>Rp{this.state.form.total}</div>
+            </div>
+            <Button transaction block>Bid!</Button>
           </div>
-          <Button transaction block>Bid!</Button>
         </BottomSheet>
       </div>
     )

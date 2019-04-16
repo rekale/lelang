@@ -7,7 +7,7 @@ const Routes = () => (
   <Router>
     <Route path="/" exact component={() => <div>homepage</div>} />
     <Route path="/daftar-lelang/" component={DaftarLelang} />
-    <Route path="/detail-lelang/" component={DetailLelang} />
+    <Route path="/detail-lelang/:id" component={DetailLelang} />
   </Router>
 )
 
